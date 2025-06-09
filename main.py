@@ -48,12 +48,21 @@ def load_vault(fernet):
         exit()
 
 def add_entry(fernet):
-    website = input("Website: ")
-    username = input("Username/Email: ")
-    password = input("Password: ")
+    website = input("Website: ").strip()
+    username = input("Username/Email: ").strip()
+    password = input("Password: ").strip()
+
+    if not website or not username or not password:
+        print("⚠️ All fields are required. Entry not saved.")
+        return
+
+    vault = load_vault(fernet)
+
+    if any(entry['website'].lower() == website.lower() for entry in vault):
+        print(f"⚠️ An entry for '{website}' already exists.")
+        return
 
     entry = {"website": website, "username": username, "password": password}
-    vault = load_vault(fernet)
     vault.append(entry)
     save_vault(vault, fernet)
     print("[+] Entry added.")
@@ -61,21 +70,25 @@ def add_entry(fernet):
 def view_entries(fernet):
     vault = load_vault(fernet)
     if not vault:
-        print("Vault is empty.")
+        print("🔒 Vault is empty.")
         return
 
+    print("\n📂 Stored Passwords:")
     for i, entry in enumerate(vault, 1):
-        print(f"\n[{i}]")
-        print(f"Website: {entry['website']}")
+        print("\n" + "="*30)
+        print(f"[{i}]")
+        print(f"Website : {entry['website']}")
         print(f"Username: {entry['username']}")
         print(f"Password: {entry['password']}")
+        print("="*30)
 
 def main():
     key = load_key()
     fernet = Fernet(key)
 
     while True:
-        print("\n--- Password Manager ---")
+        print("\n🔐 MatrixVault — Secure CLI")
+        print("-----------------------------")
         print("1. Add new password")
         print("2. View stored passwords")
         print("3. Exit")
