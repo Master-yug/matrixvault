@@ -1,3 +1,17 @@
+Phase 3 Changelog
+  1. Master Password Validation
+     Enforced minimum length of 8 characters during master password setup
+     Prevents weak master passwords from being accepted
+
+  2. Auto-Lock After Inactivity
+     Idle timeout (3 minutes) at the menu level
+     Automatically exits the app if the user is inactive, for improved security
+     Uses threading to track idle state in the background
+
+  3. Secure Deletion Confirmation
+     Requires user to confirm with "yes" before deleting any vault entry
+     Prevents accidental removal of sensitive credentials
+--------------------------------------------------------------------------------------------------------------
 Phase 2 Changelog
   1. Master Password System (with bcrypt)
       Added setup_master_password(): prompts the user to create a strong master password if not already set.
